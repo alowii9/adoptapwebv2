@@ -1,4 +1,5 @@
 {
+  "homepage": "https://alowii9.github.io/Adoptap2",
   "name": "adoptapver2",
   "version": "0.1.0",
   "private": true,
@@ -6,16 +7,24 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "firebase": "^10.8.1",
+    "gh-pages": "^6.1.1",
+    "jquery": "^3.7.1",
+    "preview": "^0.1.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^6.22.2",
+    "react-scripts": "^5.0.1",
+    "sweetalert2": "^11.6.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.29"
   }
 }
