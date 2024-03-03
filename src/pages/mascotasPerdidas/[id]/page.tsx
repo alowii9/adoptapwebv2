@@ -1,9 +1,10 @@
 'use client'
 
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import db from "../../../Firebase/FirebaseConfig";
-import { Link } from "react-router-dom";
 import NavPrincipal from "../../../componentes/NavPrincipal";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Mascota{
   id:string,
@@ -17,65 +18,57 @@ interface Mascota{
 
 }
 
-const Id2 = () => {
-  const [data, setData] = useState<Mascota[]>([]);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+const DetalleMascotaPerdida = () => {
+  const {id} = useParams<{id:string}>();
+  const [mascota, setmascota] = useState<Mascota | null>(null);
 
   
  
   useEffect(() => {
     const fetchData = async () => {
-      const snapshot = await db.collection("mascotasPerdidas").get();
-      const dataArr: any[] = [];
-      snapshot.forEach((doc) => {
-        dataArr.push({ id: doc.id, ...doc.data() });
-      });
+      try{
+        const doc = await db.collection("mascotasPerdidas").doc(id).get();
+        if(doc.exists){
+          setmascota({ id: doc.id, ...doc.data() } as Mascota);
+        } else {
+            console.log("No se encontra el local el ID proporcionado");
+        }
        
-      setData(dataArr);
+      }catch(error){
+        console.error("Error al obtener el local",error);
+      }
+     
     };
     fetchData();
-  }, []);
-
-
-  const handleItemClick = (itemId: string) => {
-    setSelectedItemId(itemId);
-  };
+  }, [id]);
 
 
   return (
     <>
       <NavPrincipal />
-      <div style={imagenesMuestra}>
-	 
-        {data.map((item)   => (
-          <div key={item.id} style={carta} onClick={() => handleItemClick(item.id)}>
-            <img style={img} src={item.img} alt={item.name} />
-            <p style={p}>Nombre mascota: {item.name}</p>
-          
-           
+      { mascota ? ( 
+          <div style={imagenesMuestra}>
+             <div style={carta}>
+              <img style={img} src={mascota.img} alt={mascota.name} />
+              <p style={p}>Nombre local: {mascota.name}</p>
+              <p style={p}>edad: {mascota.edad}</p>
+              <p style={p}>raza: {mascota.raza}</p>
+              <p style={p}>Telefono: {mascota.telefono}</p>
+              <p style={p}>Domicilio: {mascota.domicilio}</p>
+              <p style={p}>Descripcion: {mascota.descripcion}</p>
+            </div>
+         
           </div>
-        ))}
-      </div>
-
-      {selectedItemId && (
-        <div style={imagenesMuestra}>
+      ) : (
+        <p> No se encontro una Local con el Id proporcionado</p>
+      )
+    
+    }
+ 
+        <Link to="/mascotasPerdidas">
+        <button style={volverInicio}>Regresar</button>
+        </Link>
         
-          {data.map((item) =>
-            item.id === selectedItemId ? (
-              <div key={item.id}>
-                <p style={p}>Nombre mascota: {item.name}</p>
-                <p style={p}>Edad: {item.edad}</p>
-                <p style={p}>Raza: {item.raza}</p>
-                <p style={p}>Domicilio: {item.domicilio}</p>
-                <p style={p}>Telefono: {item.telefono}</p>
-                <p style={p}>Descripción: {item.descripcion}</p>
-              </div>
-            ) : null
-          )}
-        </div>
-      )}
-   
-        <button style={volverInicio}><a href="/principal/mascotasPerdidas">Regresar</a></button>
      
     </>
   );
@@ -129,4 +122,4 @@ const p = {
 }
 
 
-export default Id2;
+export default DetalleMascotaPerdida;

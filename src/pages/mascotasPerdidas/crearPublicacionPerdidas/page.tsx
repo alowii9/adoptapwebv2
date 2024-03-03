@@ -1,12 +1,12 @@
 'use client'
 
 import React, {useEffect, useState} from "react";
-import firebase from "firebase/compat/app";
 import db from "../../../Firebase/FirebaseConfig";
 import Swal from "sweetalert2";
 import $ from 'jquery';
-import { useNavigate, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {getStorage, ref, uploadBytes, getDownloadURL}  from 'firebase/storage';
+import { Link } from "react-router-dom";
 
 
 const storage = getStorage()
@@ -16,7 +16,7 @@ const storage = getStorage()
 
 const CrearPublicacionPerdidas = () => {
 
-
+  const mover = useNavigate();
 
     //funcion para agregar publicacion en firebase
 const crearPublicacionMascota = (mascota: any) => {
@@ -32,7 +32,7 @@ const crearPublicacionMascota = (mascota: any) => {
     })
     .then(function(docRef) {
         MSJOK();
-        
+        mover("/mascotasPerdidas");
     })
     .catch(function(error)
     {
@@ -165,7 +165,7 @@ return (
         />
       </div>
       <div>
-        <label htmlFor="telefono">telefono:</label>
+        <label htmlFor="telefono">telefono:</label><br />
         <input style={inputStyle}
           type="text"
           id="telefono"
@@ -174,7 +174,7 @@ return (
         />
       </div>
       <div>
-        <label htmlFor="descripcion">descripcion:</label>
+        <label htmlFor="descripcion">descripcion:</label><br />
         <textarea style={inputStyle}
           id="descripcion"
           placeholder="Agrege una breve descripcion"
@@ -182,7 +182,7 @@ return (
         />
       </div>
       <div>
-        <label htmlFor="img">agrega un imagen:</label>
+        <label htmlFor="img">agrega un imagen:</label><br />
         <input style={inputStyle}
         type="file"
         accept="image/*"
@@ -192,13 +192,18 @@ return (
         />
       </div>
 
-
-      <button id="btnsave" style={buttonStyle} type="button">Crear publicacion</button>
+        
+        <button id="btnsave" style={buttonStyle} type="button">Crear publicacion</button>
+        
+      
     
     </form>
 
   <div  style={volverInicio}>
-  <button ><a  href="/principal/mascotasPerdidas">volver al inicio</a></button>
+    <Link  to="/mascotasPerdidas">
+    <button>volver al inicio</button>
+    </Link>
+  
   </div>
  
 

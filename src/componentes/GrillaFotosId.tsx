@@ -1,8 +1,9 @@
 'use client'
 import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 
 import  db  from '../Firebase/FirebaseConfig';
-import NavPrincipal from './NavPrincipal';
+
 
 interface Mascota {
   id: string,
@@ -13,8 +14,6 @@ interface Mascota {
   edad: string,
   img: string,
   telefono: string,
-
-
 }
 
 
@@ -35,27 +34,31 @@ const GrillaFotosId = () => {
   }, []);
 
   return (
-   
-   
-    <div style={imagenesMuestra}>
-      {data.map((mascota) => 
-             (
-        
-          <a href={`mascotasEnAdopcion/${mascota.id}`} key={mascota.id}>
-            <div style={carta}>
-              <img style={img} src={mascota.img} alt={mascota.name} />
-              <p style={p}>Nombre mascota: {mascota.name}</p>
-              <p style={p}>Edad: {mascota.edad}</p>
-              <p style={p}>Raza: {mascota.raza}</p>
+    <>
 
-              <p style={p}>Domicilio: {mascota.domicilio}</p>
-              <p style={p}>Telefono: {mascota.telefono}</p>
-            </div>
-          </a>
-        
-        
+    
+   
+     
+    <div style={imagenesMuestra}>
+   
+      {data.map((mascota) => (
+        <Link to={`/detalleMascotaAdopcion/${mascota.id}`} key={mascota.id}>
+
+
+          <div style={carta}>
+            <img style={img} src={mascota.img} alt={mascota.name} />
+            <p style={p}>Nombre mascota: {mascota.name}</p>
+            <p style={p}>Edad: {mascota.edad}</p>
+            <p style={p}>Raza: {mascota.raza}</p>
+
+            <p style={p}>Domicilio: {mascota.domicilio}</p>
+            <p style={p}>Telefono: {mascota.telefono}</p>
+          </div>
+
+        </Link>
+
       ))}
-    </div>
+    </div></>
     
   );
 };
@@ -67,7 +70,7 @@ const imagenesMuestra = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  
+  backgroundImage: "url(/fondo1.jpg)",
   
 
 }
@@ -101,5 +104,10 @@ const p = {
   fontFamily: "Arial"
 }
 
+const h1 = {
+   
+  paddingTop: "20px",
+  
+}
 
 export default GrillaFotosId; 

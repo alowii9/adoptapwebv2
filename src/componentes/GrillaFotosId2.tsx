@@ -1,8 +1,8 @@
 'use client'
 import React, {useEffect, useState} from 'react';
-
+import { Link } from 'react-router-dom';
 import  db  from '../Firebase/FirebaseConfig';
-import NavPrincipal from './NavPrincipal';
+
 
 
 interface Mascota {
@@ -37,8 +37,8 @@ const GrillaFotosId2 = () => {
   return (
     <div style={imagenesMuestra}>
       {data.map((mascota) => (
-       
-          <a href={`mascotasPerdidas/${mascota.id}`} key={mascota.id}>
+        <Link to={`/detalleMascotaPerdida/${mascota.id}`} key={mascota.id}> 
+         
             <div style={carta}>
               <img style={img} src={mascota.img} alt={mascota.name} />
               <p style={p}>Nombre mascota: {mascota.name}</p>
@@ -47,8 +47,8 @@ const GrillaFotosId2 = () => {
               <p style={p}>Domicilio: {mascota.domicilio}</p>
               <p style={p}>telefono: {mascota.telefono}</p>
             </div>
-          </a>
-       
+         
+          </Link>
       ))}
     </div>
   );
@@ -62,7 +62,7 @@ const imagenesMuestra = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  
+  backgroundImage: "url(/fondo2.jpg)",
   
 
 }

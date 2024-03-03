@@ -8,6 +8,7 @@ return (
 <>
 
 <NavPrincipal/ >
+<section style={{textAlign:"center"}} >
 <div style={fondo}>
 <h1 style={h1}><u>DONACIONES</u></h1>
 <br />
@@ -44,7 +45,7 @@ return (
 
 
 </div>
-
+</section>
 
 </>
 

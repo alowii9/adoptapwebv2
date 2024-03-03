@@ -5,7 +5,7 @@ import firebase from "firebase/compat/app";
 import db from "../../../Firebase/FirebaseConfig";
 import Swal from "sweetalert2";
 import $ from 'jquery';
-import { useNavigate, Route } from 'react-router-dom';
+import { useNavigate, Route, Link } from 'react-router-dom';
 import {getStorage, ref, uploadBytes, getDownloadURL}  from 'firebase/storage';
 import { addDoc, collection } from "firebase/firestore";
 
@@ -177,7 +177,10 @@ return (
     </form>
 
   <div  style={volverInicio}>
-  <button ><a  href="/principal/locales">volver al inicio</a></button>
+    <Link to="/locales">
+    <button >volver al inicio</button>
+    </Link>
+  
   </div>
  
 

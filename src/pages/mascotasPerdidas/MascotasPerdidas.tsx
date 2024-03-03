@@ -1,6 +1,7 @@
 import React from "react";
 import NavPrincipal from "../../componentes/NavPrincipal";
 import GrillaFotosId2 from "../../componentes/GrillaFotosId2";
+import { Link } from "react-router-dom";
 
 const MascotasPerdidas = () => {
   
@@ -11,7 +12,10 @@ return (
   
     <section>
     <div  style={volverInicio}>
-  <button ><a  href="/crearPublicacionPerdidas">Crear publicación</a></button>
+      <Link to="/crearPublicacionPerdidas">
+      <button >Crear publicación</button>
+      </Link>
+ 
     
   </div>
   <GrillaFotosId2/ >

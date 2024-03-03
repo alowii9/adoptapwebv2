@@ -1,116 +1,82 @@
-'use client'
-
-import React, {useEffect, useState} from "react";
-import firebase from "firebase/compat/app";
+import React, { useEffect } from "react";
 import db from "../Firebase/FirebaseConfig";
 import Swal from "sweetalert2";
 import $ from 'jquery';
-import {  Navigate, BrowserRouter, useNavigate ,   } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-
 const Registrarse = () => {
- 
-
-  async function registrarUsuario(usuario: { name: any; email: any; password: any; }) {
-    const { name, email, password} = usuario;
+  const mover = useNavigate();
+  const navigate = useNavigate();
+  const registrarUsuario = async (usuario: {name: any; email: any; password: any;}) => {
+    const { name, email, password } = usuario;
     const auth = getAuth();
     try {
-      const infoUsuario = await createUserWithEmailAndPassword(
-        auth, email, password
-      );
-      crearUsuario({ name, email, password });
-    } catch (error) {
-      
+      const infoUsuario = await createUserWithEmailAndPassword(auth, email, password);
+      crearUsuario({ uid: infoUsuario.user?.uid, name, email, password });    } catch (error) {
       MSJERROR();
     }
-  }
+  };
 
+  const handleClick = () => {
+    let name = $("#name").val();
+    let email = $("#email").val();
+    let password = $("#password").val();
 
-  //funcion para agregar publicacion en firebase
-const mover = useNavigate();
+    const usuario = {
+      name,
+      email,
+      password,
+    };
 
-const crearUsuario = (usuario: any) => {
-  const { name, email, password} = usuario;
-    db.collection("usuarios").add({
+    if (!name || !email || !password) {
+      MSJERROR();
+    } else {
+      registrarUsuario(usuario);
+    }
+  };
+
+  const crearUsuario = (usuario: any) => {
+    const { uid, name, email, password } = usuario;
+    db.collection("usuarios")
+      .doc(uid)
+      .set({
         name,
         email,
-        password
-    })
-    .then(function(docRef) {
+        password,
+        admin: false,
+      })
+      .then(function (docRef) {
         MSJOK();
-        mover("/login")
- })
-    .catch(function(error)
-    {  
-       MSJERROR();
-    })
-}
-
-//mensaje de OK
-const MSJOK = () => {
-    Swal.fire({
-        title: "Buen Trabajo!",
-        text: "Publicacion creada!",
-        icon: "success"
+        //mover("/login");
+        mover('/principal');
+      })
+      .catch(function (error) {
+        MSJERROR();
       });
-      
-
-}
-// mensaje de error
-const MSJERROR = () => {
+  };
+  const MSJOK = () => {
     Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "publicacion no creada, verifica los campos!!",
-      });
-      
-}
+      title: "Buen Trabajo!",
+      text: "Usuario creado!",
+      icon: "success"
+    });
+  }
 
+  const MSJERROR = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Usuario no creado, verifica los campos!!",
+    });
+  }
 
-
-
-useEffect(() =>  {
- 
-    const handleClick = () =>   {
-      let name = $("#name").val();
-      let email = $("#email").val();
-      let password = $("#password").val();
-   
-    
-    
-      const usuario = {
-        name, email, password
-      }
-      
-      if(!name || !email || !password){
-        
-         MSJERROR();
-     
-      } else {
-        registrarUsuario(usuario);
-          //crearUsuario(usuario);
-        
-          
-      }
-    }
-   
-    $("#btnsave").on('click', handleClick);
-    
-    return () => {
-      
-        $("#btnsave").off('click', handleClick); // Desregistra el evento click al desmontar el componente
-       
-    }
-  }, []);
-
-
-return (
+  return (
   
    <>
 
 <div style={fondoColorPagina}>
-
+<section style={{textAlign:"center"}} >
 <h1 style={h1}>Crear Nuevo Usuario</h1>
   
   <form style={formStyle}>
@@ -121,7 +87,6 @@ return (
           type="text"
           id="name"
           placeholder="Ingrese su nombre"
-          
         />
       </div>
 
@@ -131,7 +96,6 @@ return (
           type="text"
           id="email"
           placeholder="Ingrese su correo"
-          
         />
       </div>
 
@@ -141,20 +105,19 @@ return (
           type="password"
           id="password"
           placeholder="Ingrese su contrasenia"
-          
         />
       </div>
-       
-      
-      <button id="btnsave" onClick={() => <Navigate to={'/principal'} />}  style={buttonStyle} type="button">Crear usuario</button>
-    
-    </form>
+        <button id="btnsave" onClick={handleClick} style={buttonStyle} type="button">
+          Crear usuario
+        </button>
+      </form>
 
   <div  style={volverInicio}>
   <button ><a  href="/">volver al inicio</a></button>
   </div>
+  </section>
+</div> 
 
-</div>  
 </>
 
 )

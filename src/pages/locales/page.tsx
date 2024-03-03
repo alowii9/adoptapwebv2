@@ -1,6 +1,7 @@
 import React from "react";
 import NavPrincipal from "../../componentes/NavPrincipal";
 import GrillaFotosId3 from "../../componentes/GrillaFotosId3";
+import { Link } from "react-router-dom";
 
 const Locales = () => {
   
@@ -12,7 +13,11 @@ return (
   
     <section>
     <div  style={volverInicio}>
-  <button ><a  href="/crearPublicacionLocal">Crear publicación</a></button>
+      <Link to="/crearPublicacionLocal">
+      <button >Crear publicación</button>
+      </Link>
+          
+ 
     
   </div>
   <GrillaFotosId3/ >

@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -12,27 +12,37 @@ import CrearPublicacion from './pages/mascotasEnAdopcion/crearPublicacion/page';
 import CrearPublicacionPerdidas from './pages/mascotasPerdidas/crearPublicacionPerdidas/page';
 import CrearPublicacionLocal from './pages/locales/crearPublicacionLocal/page';
 import Donaciones from './pages/donaciones/page';
+import DetalleMascota from './pages/mascotasEnAdopcion/[id]/page';
+import DetalleTienda from './pages/locales/[id]/page';
+import DetalleMascotaPerdida from './pages/mascotasPerdidas/[id]/page';
+import BodyPrincipal from './componentes/BodyPrincipal';
+import Dashboard from './pages/Dashboard';
 
 
 function App() {
   return (
     <Router>
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/Registrarse" element={<Registrarse />} />
-      <Route path="/Principal" element={<Principal />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registrarse" element={<Registrarse />} />
+      <Route path="/principal" element={<Principal />} />
 
-      <Route path="/MascotasEnAdopcion" element={<MascotasEnAdopcion />} />
-      <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
+      <Route path="/mascotasEnAdopcion" element={<MascotasEnAdopcion />} />
+      <Route path="/detalleMascotaAdopcion/:id" element={<DetalleMascota />} />
+      <Route path="/crearPublicacion" element={<CrearPublicacion />} />
 
-      <Route path="/MascotasPerdidas" element={<MascotasPerdidas />} />
-      <Route path="/CrearPublicacionPerdidas" element={<CrearPublicacionPerdidas />} />
+      <Route path="/mascotasPerdidas" element={<MascotasPerdidas />} />
+      <Route path="/crearPublicacionPerdidas" element={<CrearPublicacionPerdidas />} />
+      <Route path="/detalleMascotaPerdida/:id" element={<DetalleMascotaPerdida />} />
 
-      <Route path="/Locales" element={<Locales />} />
-      <Route path="/CrearPublicacionLocal" element={<CrearPublicacionLocal />} />
+      <Route path="/locales" element={<Locales />} />
+      <Route path="/crearPublicacionLocal" element={<CrearPublicacionLocal />} />
+      <Route path="/detalleTienda/:id" element={<DetalleTienda />} />
 
-    
-      <Route path="/Donaciones" element={<Donaciones />} />
+      <Route path="/donaciones" element={<Donaciones />} />
+      <Route path="/" element={<BodyPrincipal />} />
+
+      <Route path="/dashboard" element={<Dashboard />} />
       
 
 

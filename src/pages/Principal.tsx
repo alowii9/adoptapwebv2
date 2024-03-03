@@ -1,10 +1,7 @@
 'use client'
 
 import React from "react";
-import GridDeImagenes from "../componentes/Grillafotos";
 import NavPrincipal from "../componentes/NavPrincipal";
-import { url } from "inspector";
-import mascotasEnAdopcion from "./mascotasEnAdopcion/[id]/page";
 import GrillaFotosId from "../componentes/GrillaFotosId";
 import GrillaFotosId2 from "../componentes/GrillaFotosId2";
 import GrillaFotosId3 from "../componentes/GrillaFotosId3";
@@ -19,7 +16,7 @@ const Principal = () =>  {
 
      <NavPrincipal/ >
   
-<section>
+<section style={{textAlign:"center"}} >
     <div style={mascotasNuevas}>
 
         <h1 style={h1}>MASCOTAS DISPONIBLES PARA ADOPCION</h1>
@@ -32,7 +29,7 @@ const Principal = () =>  {
 </section>
 
 <hr  style={hr} />
-<section>
+<section style={{textAlign:"center"}}>
 
     <div style={mascotasPerdidas}>
         <h1 style={h1}>MASCOTAS PERDIDAS</h1>
@@ -43,7 +40,7 @@ const Principal = () =>  {
 </section>
 <hr style={hr}  />
 
-<section >
+<section style={{textAlign:"center"}}>
     <div style={locales}>
     <h1 style={h1}>LOCALES </h1>
     <h2 style={h1}>agregados recientemente</h2>

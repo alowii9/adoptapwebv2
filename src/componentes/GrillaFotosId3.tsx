@@ -1,7 +1,8 @@
 'use client'
 import React, {useEffect, useState} from 'react';
 import  db  from '../Firebase/FirebaseConfig';
-import NavPrincipal from './NavPrincipal';
+import { Link } from 'react-router-dom';
+
 
 interface Local{
   id:string,
@@ -32,17 +33,19 @@ const GrillaFotosId3 = () => {
   return (
     <div style={imagenesMuestra}>
       {data.map((local) => (
+        <Link to={`/detalleTienda/${local.id}`} key={local.id}>  
        
-          <a href={`locales/${local.id}`} key={local.id}>
+          
             <div style={carta}>
               <img style={img} src={local.img} alt={local.name} />
               <p style={p}>Nombre local: {local.name}</p>
               <p style={p}>Telefono: {local.telefono}</p>
               <p style={p}>Domicilio: {local.domicilio}</p>
+              <p style={p}>Descripcion: {local.descripcion}</p>
               
             </div>
-          </a>
-     
+         
+          </Link>
       ))}
     </div>
   );
@@ -55,7 +58,7 @@ const imagenesMuestra = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-
+  backgroundImage: "url(/fondo3.jpg)"
   
 
 }

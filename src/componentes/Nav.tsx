@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 const Nav = () => {
@@ -24,16 +25,18 @@ const Nav = () => {
           <div style={navStyle}>
               <ul style={ulStyle}>
                   <li style={liStyle}>
-                  
-                      <a  href="/login" style={aStyle}>Ingresar</a>
-                    
+                    <Link style={aStyle} to="/login">
+                      <p>Ingresar</p>
+                    </Link>
                   </li>
 
-                  <li style={liStyle} >
-                  
-                      <a  href="/registrarse" style={aStyle}>Registrarse</a>
-                   
+                  <li style={liStyle}>
+                    <Link style={aStyle} to="/registrarse">
+                      <p>Registrarse</p>
+                    </Link>
                   </li>
+
+                 
               </ul>
 
               </div>
@@ -83,7 +86,8 @@ display: 'flex'
 };
 
 const liStyle = {
-margin: '0 10px'
+margin: '0 10px',
+
 };
 
 const aStyle = {

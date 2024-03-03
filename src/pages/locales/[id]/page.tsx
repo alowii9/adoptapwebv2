@@ -1,15 +1,14 @@
 'use client'
 
-import React, {useState, useEffect, useRef} from "react";
-
+import React, {useState, useEffect} from "react";
+import {useParams} from 'react-router-dom';
 import db from "../../../Firebase/FirebaseConfig";
-import { Link } from "react-router-dom";
 import NavPrincipal from "../../../componentes/NavPrincipal";
-import mascotasEnAdopcion from "../page";
-import { doc } from "firebase/firestore";
-import { StringFormat } from "firebase/storage";
+import { Link } from "react-router-dom";
 
-interface Local{
+
+
+interface Tienda{
   id:string,
   name: string,
   domicilio: string,
@@ -19,68 +18,58 @@ interface Local{
 
 }
 
-const Id3 = () => {
-  const [data, setData] = useState<Local[]>([]);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+const DetalleTienda = () => {
+  const {id} = useParams<{id:string}>();
+  const [tienda, settienda] = useState<Tienda | null>(null);
 
   
  
   useEffect(() => {
     const fetchData = async () => {
-      const snapshot = await db.collection("Locales").get();
-      const dataArr: any[] = [];
-      snapshot.forEach((doc) => {
-        dataArr.push({ id: doc.id, ...doc.data() });
-      });
+      try{
+        const doc = await db.collection("Locales").doc(id).get();
+        if(doc.exists){
+          settienda({ id: doc.id, ...doc.data() } as Tienda);
+        } else {
+            console.log("No se encontra el local el ID proporcionado");
+        }
        
-      setData(dataArr);
+      }catch(error){
+        console.error("Error al obtener el local",error);
+      }
+     
     };
     fetchData();
-  }, []);
-
-
-  const handleItemClick = (itemId: string) => {
-    setSelectedItemId(itemId);
-  };
+  }, [id]);
 
 
   return (
     <>
       <NavPrincipal />
-      <div style={imagenesMuestra}>
-	 
-        {data.map((item)   => (
-          <div key={item.id} style={carta} onClick={() => handleItemClick(item.id)}>
-            <img style={img} src={item.img} alt={item.name} />
-            <p style={p}>Nombre mascota: {item.name}</p>
-          
-           
+      { tienda ? ( 
+          <div style={imagenesMuestra}>
+             <div style={carta}>
+              <img style={img} src={tienda.img} alt={tienda.name} />
+              <p style={p}>Nombre local: {tienda.name}</p>
+              <p style={p}>Telefono: {tienda.telefono}</p>
+              <p style={p}>Domicilio: {tienda.domicilio}</p>
+              <p style={p}>Descripcion: {tienda.descripcion}</p>
+            </div>
+         
           </div>
-        ))}
-      </div>
-
-      {selectedItemId && (
-        <div style={imagenesMuestra}>
-        
-          {data.map((item) =>
-            item.id === selectedItemId ? (
-              <div key={item.id}>
-                <p style={p}>Nombre Local: {item.name}</p>
-              
-                <p style={p}>Domicilio: {item.domicilio}</p>
-                <p style={p}>Telefono: {item.telefono}</p>
-                <p style={p}>Descripción: {item.descripcion}</p>
-              </div>
-            ) : null
-          )}
-        </div>
-      )}
-   
+      ) : (
+        <p> No se encontro una Local con el Id proporcionado</p>
+      )
+    
+    }
+ 
 
 	 
 
-      
-        <button style={volverInicio}><a href="/principal/locales">Regresar</a></button>
+      <Link to="locales">
+      <button style={volverInicio}>Regresar</button>
+      </Link>
+        
      
     </>
   );
@@ -146,4 +135,4 @@ const p = {
 }
 
 
-export default Id3;
+export default DetalleTienda;

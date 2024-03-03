@@ -1,9 +1,9 @@
-import react from "react";
+
 
 
 const Footer = () => {
 return (
-<footer>
+<footer style={{textAlign:"center"}}>
 
 <div style={fondoFooter}>
 
@@ -15,18 +15,18 @@ return (
      <br />
 
        <li style={aStyle}>
-        <a  target="_blank" href="http://www.facebook.com">Facebook</a>
+        <a  target="_blank" href="http://www.facebook.com" rel="noreferrer">Facebook</a>
         <img  style={icono}  src="/facebook.png" width={20} height={20}  alt="facebookIcono" />
        </li>
 
        <li style={aStyle}>
-           <a   target="_blank" href="http://www.twitter.com">Twitter</a>
+           <a   target="_blank" href="http://www.twitter.com" rel="noreferrer">Twitter</a>
            <img  style={icono} src="/twitter.png" width={20} height={20} alt="" />
        </li>
 
        <li style={aStyle} >
 
-           <a   target="_blank" href="http://www.instagram.com">Instagram</a>
+           <a   target="_blank" href="http://www.instagram.com" rel="noreferrer">Instagram</a>
            <img  style={icono} src="/instagram.png" width={20} height={20} alt="" />
        </li> 
    </ul>

@@ -1,6 +1,7 @@
 import React from "react";
 import NavPrincipal from "../../componentes/NavPrincipal";
 import GrillaFotosId from "../../componentes/GrillaFotosId";
+import { Link } from "react-router-dom";
 
 const MascotasEnAdopcion = () => {
   
@@ -12,8 +13,9 @@ return (
   
     <section>
     <div  style={volverInicio}>
-  <button ><a  href="/crearPublicacion">Crear publicación</a></button>
-    
+      <Link to="/crearPublicacion"> 
+           <button >Crear publicación</button>
+      </Link>
   </div>
   <GrillaFotosId/ >
     </section>

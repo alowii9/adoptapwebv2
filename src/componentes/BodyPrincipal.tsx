@@ -1,14 +1,14 @@
 import React from "react";
-import { StyleHTMLAttributes } from "react";
-import GridDeImagenes from "./Grillafotos";
+import Nav from "./Nav";
+
 
 const BodyPrincipal = () => {
     
 return(
 
       <>
-
-<section>
+<Nav/>
+<section style={{textAlign:"center"}}>
     <div style={mascotasNuevas}>
 
         <h1 style={h1b}>Que es adoptapp?</h1>
@@ -46,7 +46,7 @@ return(
         </div>
       </section>
       
-      <section  style={carta}>
+      <section  style={{textAlign:"center"}}>
       <div  style={donar}>
 
         <h1 style={h1b}>DONACIONES PARA FUNDACIONES</h1>

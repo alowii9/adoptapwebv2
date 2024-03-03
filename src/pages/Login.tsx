@@ -1,35 +1,58 @@
 'use client'
 
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import  db  from "../Firebase/FirebaseConfig";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { app } from "../Firebase/FirebaseConfig";
+import { Link } from "react-router-dom";
 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
  const navigate = useNavigate();
+ const auth = getAuth(app);
 
-  const handleLogin = async (e: any) => {
-    e.preventDefault();
-    try {
-      const auth = getAuth();
-     await signInWithEmailAndPassword(auth, email, password);
-      
-      const user = auth.currentUser;
-      if (user){
-        const userData = await db.collection("usuarios").doc(user.uid).get();
-        MSJOK();
-       
-      }
+
+ useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Si hay un usuario autenticado, configura la persistencia de sesión
+      setPersistence(auth, browserSessionPersistence)
+        .then(() => {
+          console.log("Persistencia de sesión configurada correctamente");
+        })
+        .catch((error) => {
+          console.error("Error al configurar la persistencia de sesión:", error);
+        });
       navigate("/Principal");
-      // Puedes redirigir al usuario a otra página o mostrar un mensaje de bienvenida
-    } catch (error) {
-      MSJERROR();
     }
-  };
+  });
+
+  return unsubscribe;
+}, [auth, navigate]);
+
+
+ 
+
+
+
+const handleLogin = async (e: any) => {
+  e.preventDefault();
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    const user = auth.currentUser;
+    if (user) {
+      MSJOK();
+      navigate("/Principal");
+    }
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    MSJERROR();
+  }
+};
 
   const MSJOK = () => {
     Swal.fire({
@@ -52,6 +75,7 @@ const MSJERROR = () => {
 
   return (
     <>
+    <section style={{textAlign:"center"}}>
       <div style={fondoColorPagina}>
         <h1 style={h1}>Ingresar</h1>
         <form style={formStyle} onSubmit={handleLogin}>
@@ -68,7 +92,7 @@ const MSJERROR = () => {
           </div>
           <br />
           <div>
-            <label htmlFor="password">Contraseña:</label>
+            <label htmlFor="password">Contraseña:</label> <br />
             <input
               style={inputStyle}
               type="password"
@@ -81,14 +105,15 @@ const MSJERROR = () => {
           <button style={buttonStyle} type="submit">Iniciar Seccion</button>
         </form>
         <div style={h2}>
-          <h2>No tenes cuenta?, <a href="../Registrarse"><u>toque aqui para registrarse</u></a></h2>
-          <button style={buttonStyle} onClick={() => navigate("/Registrarse")}>Registrarse</button>
+        <h2>No tienes cuenta?, <Link to="/registrarse"><u>toque aquí para registrarse</u></Link></h2>
+          <button style={buttonStyle} onClick={() => navigate("/registrarse")}>Registrarse</button>
 
         </div>
         <div style={volverInicio}>
           <button><a href="/">Volver al inicio</a></button>
         </div>
       </div>
+      </section>
     </>
   );
 };

@@ -1,18 +1,15 @@
 'use client'
 
-import React, {useEffect, useState} from "react";
-import firebase from "firebase/compat/app";
+import React, {useEffect} from "react";
 import db from "../../../Firebase/FirebaseConfig";
 import Swal from "sweetalert2";
 import $ from 'jquery';
-import { useNavigate, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {getStorage, ref, uploadBytes, getDownloadURL}  from 'firebase/storage';
-import { addDoc, collection } from "firebase/firestore";
+import { Link } from "react-router-dom";
+
 
 const storage = getStorage()
-
-
-
 
 const CrearPublicacion = () => {
 
@@ -33,7 +30,7 @@ const crearPublicacionMascota = (mascota: any) => {
     })
     .then(function(docRef) {
         MSJOK();
-        mover('principal/mascotasEnAdopcion');
+        mover('/mascotasEnAdopcion');
     })
     .catch(function(error)
     {
@@ -197,7 +194,11 @@ return (
     </form>
 
   <div  style={volverInicio}>
-  <button ><a  href="/mascotasEnAdopcion">volver al inicio</a></button>
+        <Link to="/mascotasEnAdopcion">
+        <button >volver al inicio</button>
+        </Link>
+  
+
   </div>
  
 
