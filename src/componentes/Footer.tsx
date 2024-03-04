@@ -1,6 +1,3 @@
-
-
-
 const Footer = () => {
 return (
 <footer style={{textAlign:"center"}}>

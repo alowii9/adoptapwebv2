@@ -66,7 +66,7 @@ const DetalleTienda = () => {
 
 	 
 
-      <Link to="locales">
+      <Link to="/locales">
       <button style={volverInicio}>Regresar</button>
       </Link>
         

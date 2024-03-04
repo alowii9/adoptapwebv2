@@ -7,13 +7,25 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const Registrarse = () => {
   const mover = useNavigate();
-  const navigate = useNavigate();
+  
   const registrarUsuario = async (usuario: {name: any; email: any; password: any;}) => {
     const { name, email, password } = usuario;
     const auth = getAuth();
     try {
+      // Antes de intentar crear un nuevo usuario, verifica si ya existe
+      const usuarioExistente = await db.collection("usuarios").where("name", "==", name).get();
+  
+      if (!usuarioExistente.empty) {
+        // Si el usuario ya existe, muestra un mensaje de error
+        MSJERROREXISTE();
+        return;
+      }
+  
+      // Si el usuario no existe, procede con el registro
       const infoUsuario = await createUserWithEmailAndPassword(auth, email, password);
-      crearUsuario({ uid: infoUsuario.user?.uid, name, email, password });    } catch (error) {
+      crearUsuario({ uid: infoUsuario.user?.uid, name, email, password });
+    } catch (error) {
+      // Muestra un mensaje de error genérico si hay un problema
       MSJERROR();
     }
   };
@@ -55,6 +67,9 @@ const Registrarse = () => {
         MSJERROR();
       });
   };
+
+
+   //Alertas para el usuario
   const MSJOK = () => {
     Swal.fire({
       title: "Buen Trabajo!",
@@ -70,6 +85,15 @@ const Registrarse = () => {
       text: "Usuario no creado, verifica los campos!!",
     });
   }
+
+  const MSJERROREXISTE = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Usuario no creado, ya existe!!",
+    });
+  }
+
 
   return (
   
@@ -99,14 +123,17 @@ const Registrarse = () => {
         />
       </div>
 
-      <div>
-        <label htmlFor="password">password:</label><br />
-        <input style={inputStyle}
-          type="password"
-          id="password"
-          placeholder="Ingrese su contrasenia"
-        />
-      </div>
+        <div>
+          <label >password:</label><br />
+          <input {...{minLength:6}} style={inputStyle}
+            type="password"
+            id="password"
+            placeholder="Ingrese su contraseña"
+           
+          />
+          <p>la password requiere 6 caracteres</p>
+        </div>
+
         <button id="btnsave" onClick={handleClick} style={buttonStyle} type="button">
           Crear usuario
         </button>
@@ -123,6 +150,10 @@ const Registrarse = () => {
 )
 
 }
+
+
+
+
 
 
 

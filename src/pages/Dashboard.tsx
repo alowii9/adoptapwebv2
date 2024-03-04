@@ -2,12 +2,9 @@ import React from "react"
 import { useState, useEffect} from "react";
 import db from "../Firebase/FirebaseConfig";
 import Swal from "sweetalert2";
-import {getAuth, deleteUser} from "firebase/auth";
-import { app } from "../Firebase/FirebaseConfig";
-import { getDoc, updateDoc, doc } from "firebase/firestore"
-import { useParams } from "react-router-dom";
+import {getAuth, deleteUser as deleteAuthUser} from "firebase/auth";
 import NavPrincipal from "../componentes/NavPrincipal";
-
+import { useNavigate } from 'react-router-dom';
 
 interface Mascota {
     id: string,
@@ -44,10 +41,7 @@ const Dashboard = () => {
     const [local, setlocal] = useState<Local[]>([]);
     const [mascotaAdop, setmascotaAdop] = useState<Mascota[]>([]);
     const [mascotaPer, setmascotaPer] = useState<Mascota[]>([]);
-    
-    const [selectedUsuario, setSelectedUsuario] = useState(null);
-
-
+    const mover = useNavigate();
 
     const ConfirmarAccion = () => {
         return window.confirm('¿Confirmar borrado de documento?');
@@ -58,28 +52,35 @@ const Dashboard = () => {
 
 
     const DeleteUsuario = async (id: any) => {
-    
         // Referencia al documento que deseas borrar
         const usuarioId = id;
-        const auth = getAuth(app);
-        
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+
         if (ConfirmarAccion()) {
             try {
-                // Eliminar el usuario autenticado en Firebase Authentication
-                
-                
-                // Eliminar el documento en Firestore
+                if(currentUser && currentUser.uid === usuarioId){
+                    MSJERROR();
+                    console.log("No puedes eliminar el usuario conectado");
+                    return;
+                }
                 await db.collection('usuarios').doc(usuarioId).delete();
-    
+                await deleteAuthUser(usuarioId);
+              
                 MSJOK();
-            } catch (error) {
+               
+                mover("/dashboard");
+                } catch (error) {
+                    MSJERROR();
+                    
+                    console.log('Borrado cancelado por el usuarioSSs');
+                }
+            } else {
+                // El usuario canceló la acción
                 MSJERROR();
+                console.log('Borrado cancelado por el usuario');
             }
-        } else {
-            // El usuario canceló la acción
-            console.log('Borrado cancelado por el usuario');
-        }
-    };
+        };
 
 
     const DeleteMascotaAdoptada = async (id: any) => {
@@ -93,11 +94,12 @@ const Dashboard = () => {
                 await db.collection('mascotas').doc(mascotaAdop).delete();
     
                 MSJOK();
+                mover("/dashboard");
             } catch (error) {
                 MSJERROR();
             }
         } else {
-           
+            MSJERROR();
             console.log('Borrado cancelado por el usuario');
         }
     };
@@ -114,11 +116,12 @@ const Dashboard = () => {
                 await db.collection('mascotasPerdidas').doc(mascotaPer).delete();
     
                 MSJOK();
+                mover("/dashboard");
             } catch (error) {
                 MSJERROR();
             }
         } else {
-           
+            MSJERROR();
             console.log('Borrado cancelado por el usuario');
         }
     };
@@ -135,11 +138,12 @@ const Dashboard = () => {
                 await db.collection('Locales').doc(locales).delete();
     
                 MSJOK();
+                mover("/dashboard");
             } catch (error) {
                 MSJERROR();
             }
         } else {
-           
+            MSJERROR();
             console.log('Borrado cancelado por el usuario');
         }
     };
@@ -168,7 +172,7 @@ const MSJERROR = () => {
 
 
 
-    useEffect(() => {
+    useEffect( () => {
     const fetchDataUsuario = async () => {
       const snapshot = await db.collection("usuarios").get();
       const dataArr: any[] = [];
@@ -282,7 +286,7 @@ fetchDataLocal();
                             <tr >
                                 <td>{mascotaAdop.id}</td>
                                 <td>{mascotaAdop.name}</td>
-                               <td> <img src={mascotaAdop.img} width={150} height={150} alt="" /></td> 
+                               <td> <img  style={fotoMuestra} src={mascotaAdop.img} width={150} height={150} alt="" /></td> 
                                
                                 <td>
                                     <button>Editar</button>
@@ -312,7 +316,7 @@ fetchDataLocal();
                             <tr>
                                 <td>{mascotaPer.id}</td>
                                 <td>{mascotaPer.name}</td>
-                                <td><img src={mascotaPer.img} width={150} height={150} alt="" /></td>
+                                <td><img style={fotoMuestra} src={mascotaPer.img} width={150} height={150} alt="" /></td>
                                
                                 <td>
                                     <button>Editar</button>
@@ -342,7 +346,7 @@ fetchDataLocal();
                             <tr >
                                 <td>{local.id}</td>
                                 <td>{local.name}</td>
-                                <td><img src={local.img} width={150} height={150} alt="" /></td>
+                                <td><img style={fotoMuestra} src={local.img} width={150} height={150} alt="" /></td>
                                
                                 <td>
                                     <button>Editar</button>
@@ -384,10 +388,12 @@ const fondo = {
     backgroundImage: "url(/fondoDash.jpg)",
     justifyContent: "center",
     backgroundSize: "70%" 
-
-
 }
 
+const fotoMuestra = {
+    borderRadius: '15px',
+    border: '3px black solid',
+}
   
 
 export default Dashboard;

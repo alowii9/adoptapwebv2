@@ -23,6 +23,7 @@ function App() {
   return (
     <Router>
     <Routes>
+      <Route path="/" element={<BodyPrincipal />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registrarse" element={<Registrarse />} />
       <Route path="/principal" element={<Principal />} />
@@ -40,8 +41,6 @@ function App() {
       <Route path="/detalleTienda/:id" element={<DetalleTienda />} />
 
       <Route path="/donaciones" element={<Donaciones />} />
-      <Route path="/" element={<BodyPrincipal />} />
-
       <Route path="/dashboard" element={<Dashboard />} />
       
 
